@@ -1,5 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 // import messages from '../AutoDismissAlert/messages'
 // import { withStyles } from '@material-ui/core/styles'
 // import Input from '@material-ui/core/Input'
@@ -13,6 +14,24 @@ import ScreenshotForm from './../../shared/ScreenshotForm'
 import messages from '../AutoDismissAlert/messages'
 // import Card from '@material-ui/core/Card'
 // import CardContent from '@material-ui/core/CardContent'
+// import GridList from '@material-ui/core/GridList'
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper
+  },
+  gridList: {
+    width: 500,
+    height: 600
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)'
+  }
+})
 
 class PostScreenshot extends Component {
   constructor (props) {
@@ -59,7 +78,7 @@ class PostScreenshot extends Component {
           message: messages.createScreenshotSuccess,
           variant: 'success'
         }))
-        .then(() => history.push('/'))
+        .then(() => history.push('/index-screenshots'))
         .catch(error => {
           this.setState({ screenshot: '' })
           msgAlert({
@@ -92,8 +111,7 @@ class PostScreenshot extends Component {
 
     render () {
       return (
-        <Fragment>
-          <h2>New Screenshot</h2>
+        <div>
           <ScreenshotForm
             title={this.state.screenshot.title}
             description={this.state.screenshot.description}
@@ -101,9 +119,9 @@ class PostScreenshot extends Component {
             handleSubmit={this.handleSubmit}
             handleInputChange={this.handleInputChange}
           />
-        </Fragment>
+        </div>
       )
     }
 }
 
-export default withRouter(PostScreenshot)
+export default withRouter(withStyles(styles)(PostScreenshot))

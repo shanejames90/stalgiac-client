@@ -1,5 +1,5 @@
 // imports
-import React, { Component, Link } from 'react'
+import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { indexScreenshots } from '../../api/screenshot'
 import { withStyles } from '@material-ui/core/styles'
@@ -22,7 +22,7 @@ const styles = theme => ({
   },
   gridList: {
     width: 500,
-    height: 450
+    height: 600
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
@@ -62,25 +62,23 @@ class IndexScreenshots extends Component {
             title={screenshot.title}
             subtitle={screenshot.imagefile}
             actionIcon={
-              <Link to={`/screenshots/${screenshot.id}`}>
-                <IconButton className={classes.icon}>
-                  <span className="material-icons">link</span>
-                </IconButton>
-              </Link>
+              <IconButton className={classes.icon}>
+                <span className="material-icons">link</span>
+              </IconButton>
             }
           />
         </GridListTile>
       ))
     }
     return (
-      <React.Fragment>
+      <div className={classes.root}>
         <GridList cellHeight={180} className={classes.gridList}>
-          <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
+          <GridListTile key="Subheader" cols={2} style={{ height: 'auto', marginTop: '10px' }}>
             <ListSubheader component="div">Screenshots</ListSubheader>
           </GridListTile>
           {screenshotsJSX}
         </GridList>
-      </React.Fragment>
+      </div>
     )
   }
 }

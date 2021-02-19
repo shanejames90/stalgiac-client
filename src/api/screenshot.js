@@ -27,3 +27,13 @@ export const indexScreenshots = (user, screenshot) => {
     }
   })
 }
+
+export const showScreenshot = (id, user) => {
+  return axios({
+    url: apiUrl + '/purchases/' + id,
+    method: 'GET',
+    headers: {
+      'Authorization': `Token ${user.token}`
+    }
+  })
+}

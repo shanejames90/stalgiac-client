@@ -12,7 +12,7 @@ export const postScreenshot = (user, screenshot) => {
       screenshot: {
         title: screenshot.title,
         description: screenshot.description,
-        image: screenshot.image
+        imagefile: screenshot.imagefile
       }
     }
   })

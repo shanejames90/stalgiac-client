@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar'
 const authenticatedOptions = (
   <Fragment>
     <Nav.Link href="#screenshots"><span className="material-icons">add_a_photo</span></Nav.Link>
+    <Nav.Link href="#index-screenshots"><span className="material-icons">view_list</span></Nav.Link>
     <Nav.Link href="#change-password">Change Password</Nav.Link>
     <Nav.Link href="#sign-out">Sign Out</Nav.Link>
   </Fragment>

@@ -10,6 +10,7 @@ import SignIn from './components/SignIn/SignIn'
 import SignOut from './components/SignOut/SignOut'
 import ChangePassword from './components/ChangePassword/ChangePassword'
 import PostScreenshot from './components/PostScreenshot/PostScreenshot'
+import IndexScreenshots from './components/IndexScreenshots/IndexScreenshots'
 
 class App extends Component {
   constructor (props) {
@@ -68,6 +69,9 @@ class App extends Component {
           )} />
           <AuthenticatedRoute user={user} path='/screenshots' render={() => (
             <PostScreenshot msgAlert={this.msgAlert} user={user} />
+          )} />
+          <AuthenticatedRoute user={user} exact path='/index-screenshots' render={({ props }) => (
+            <IndexScreenshots msgAlert={this.msgAlert} user={user} />
           )} />
         </main>
       </Fragment>

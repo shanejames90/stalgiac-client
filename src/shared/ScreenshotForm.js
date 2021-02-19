@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles'
 import FormControl from '@material-ui/core/FormControl'
 import Form from 'react-bootstrap/Form'
 import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
+// import Grid from '@material-ui/core/Grid'
 
 import Button from '@material-ui/core/Button'
 // import AccountCircle from '@material-ui/icons/AccountCircle'
@@ -19,7 +19,7 @@ const styles = theme => ({
 })
 
 function ScreenshotForm (props) {
-  const { classes, handleSubmit, handleInputChange, onScreenshotChange } = props
+  const { classes, handleSubmit, handleInputChange } = props
 
   return (
     <div>
@@ -48,17 +48,28 @@ function ScreenshotForm (props) {
             variant="outlined"
           />
         </FormControl>
-        <Grid container spacing={8} alignItems="flex-start">
+        {/* <Grid container spacing={8} alignItems="flex-start">
           <Grid item>
             <input type="file" onChange={onScreenshotChange} />
           </Grid>
-          <Grid item>
-            <Button type="submit" variant="contained" color="default">
+          <Grid item> */}
+        <FormControl className={classes.margin}>
+          <TextField
+            id="outlined-search"
+            label="Screenshot Url"
+            name="imagefile"
+            onChange={handleInputChange}
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+          />
+        </FormControl>
+        <Button type="submit" variant="contained" color="default">
               Upload
-              <span className="material-icons">cloud_upload</span>
-            </Button>
-          </Grid>
-        </Grid>
+          <span className="material-icons">cloud_upload</span>
+        </Button>
+        {/* </Grid>
+        </Grid> */}
       </Form>
     </div>
   )

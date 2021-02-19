@@ -17,3 +17,13 @@ export const postScreenshot = (user, screenshot) => {
     }
   })
 }
+
+export const indexScreenshots = (user, screenshot) => {
+  return axios({
+    url: apiUrl + '/screenshots/',
+    method: 'GET',
+    headers: {
+      'Authorization': `Token ${user.token}`
+    }
+  })
+}

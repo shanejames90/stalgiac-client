@@ -32,7 +32,8 @@ class PostScreenshot extends Component {
         title: '',
         description: '',
         imagefile: ''
-      }
+      },
+      createdId: null
     }
   }
 
@@ -49,8 +50,13 @@ class PostScreenshot extends Component {
   //   this.setState({ screenshot: event.target.files[0] })
   // }
   handleInputChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value
+    event.persist()
+    this.setState(state => {
+      return {
+        screenshot: {
+          ...state.screenshot, [event.target.name]: event.target.value
+        }
+      }
     })
   }
 
@@ -61,8 +67,13 @@ class PostScreenshot extends Component {
       // console.log(this.state.description)
       // console.log(this.state.imagefile)
       const { user, msgAlert, history } = this.props
+      const { screenshot } = this.state
       // const { screenshot } = this.state
-      postScreenshot(user, this.state)
+      postScreenshot(user, screenshot)
+        .then(res => {
+          this.setState({ createdId: res.data.screenshot.id })
+          return res
+        })
         .then(() => msgAlert({
           heading: 'New screenshot added successfully!',
           message: messages.createScreenshotSuccess,

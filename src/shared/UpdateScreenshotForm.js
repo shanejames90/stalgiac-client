@@ -46,7 +46,7 @@ function UpdateScreenshotForm (props) {
               <TextField
                 id="outlined-search"
                 label="Title"
-                name="newtitle"
+                name="title"
                 onChange={handleInputChange}
                 className={classes.textField}
                 margin="normal"
@@ -59,7 +59,7 @@ function UpdateScreenshotForm (props) {
                 label="Description"
                 multiline
                 rows="4"
-                name="newdescription"
+                name="description"
                 onChange={handleInputChange}
                 className={classes.textField}
                 margin="normal"
@@ -70,7 +70,7 @@ function UpdateScreenshotForm (props) {
               <TextField
                 id="outlined-search"
                 label="Screenshot Url"
-                name="newimagefile"
+                name="imagefile"
                 onChange={handleInputChange}
                 className={classes.textField}
                 margin="normal"

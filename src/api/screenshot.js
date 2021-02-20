@@ -40,7 +40,7 @@ export const showScreenshot = (id, user) => {
 
 export const updateScreenshot = (id, screenshot, user) => {
   return axios({
-    url: apiUrl + '/screenshots/' + id + '/',
+    url: apiUrl + `/screenshots/${id}/`,
     method: 'PATCH',
     headers: {
       'Authorization': `Token ${user.token}`

@@ -62,55 +62,60 @@ class ShowScreenshot extends Component {
       screenshot: {
         title: '',
         description: '',
-        imagefile: '',
-        newtitle: this.props.newtitle,
-        newdescription: this.props.newdescription,
-        newimagefile: this.props.newimagefile
+        imagefile: ''
       },
       updated: false,
       deleted: false,
       expanded: false
     }
   }
-  handleInputChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
-  }
 
-  componentDidMount () {
+  async componentDidMount () {
     const { user, match, msgAlert } = this.props
     // request single screenshot
-    showScreenshot(match.params.id, user)
-      .then(res => this.setState({ screenshot: res.data.screenshot }))
-      .then(() => msgAlert({
-        heading: 'Showing Screenshot Successfully',
-        message: 'Your screenshot is now displayed.',
-        variant: 'success'
-      }))
-      .catch(error => {
-        msgAlert({
-          heading: 'Failed to show your screenshot',
-          message: 'Failed to show screenshot with error: ' + error.message,
-          variant: 'danger'
-        })
+    try {
+      await showScreenshot(match.params.id, user)
+        .then(res => this.setState({ screenshot: res.data.screenshot }))
+        .then(() => this.setState({ updated: false }))
+        .then(() => msgAlert({
+          heading: 'Showing Screenshot Successfully',
+          message: 'Your screenshot is now displayed.',
+          variant: 'success'
+        }))
+    } catch (err) {
+      msgAlert({
+        heading: 'Failed to show your screenshot',
+        message: 'Failed to show screenshot with error: ' + err.message,
+        variant: 'danger'
       })
-  }
-  componentDidUpdate () {
-    const { user, match } = this.props
-    if (!this.state.screenshot && this.state.updated === true) {
-      showScreenshot(match.params.id, user)
-        .then((res) => this.setState({ screenshot: res.data.screenshot }))
     }
   }
 
-  handleSubmit = async (event) => {
-    event.preventDefault()
-    const { user, msgAlert } = this.props
+  handleInputChange = (e) => {
+    e.persist()
+    this.setState(currState => {
+      const { name, value } = e.target
+      const updatedField = {
+        [name]: value
+      }
+      // console.log({ ...updatedField, ...currState.screenshot })
+      // console.log({ ...currState.screenshot, ...updatedField })
+      const newScreenshot = {
+        ...currState.screenshot,
+        ...updatedField
+      }
+      console.log(newScreenshot)
+      return { screenshot: newScreenshot }
+    })
+  }
+
+  handleSubmit = async (e) => {
+    e.preventDefault()
+    const { user, msgAlert, match } = this.props
     try {
-      await updateScreenshot(this.props.match.params.id, this.state, user)
-        .then(() => this.setState({ updated: true, screenshot: '' }))
-        .then(() => this.setState({ updated: false }))
+      await updateScreenshot(match.params.id, this.state, user)
+        .then(() => this.setState({ updated: true }))
+        // .then(() => this.setState({ updated: false }))
         .then(() => msgAlert({
           heading: 'Updated Succesfully',
           message: messages.updateScreenshotSuccess,
@@ -125,8 +130,19 @@ class ShowScreenshot extends Component {
     }
   }
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }))
+  componentDidUpdate (prevProps) {
+    if (this.props.screenshot !== prevProps.screenshot) {
+      this.setState({ screenshot: this.props.screenshot })
+    }
+  }
+
+  // handleExpandClick = () => {
+  //   this.setState(state => ({ expanded: !state.expanded }))
+  // }
+
+  handleClick = () => {
+    const { history } = this.props
+    history.push(`/update-screenshot/${this.props.match.params.id}`)
   }
 
   handleDeleteClick = async (event) => {
@@ -153,7 +169,8 @@ class ShowScreenshot extends Component {
 
   render () {
     const { classes } = this.props
-    const { deleted, screenshot } = this.state
+    const { deleted } = this.state
+    const { screenshot } = this.state
 
     if (!screenshot) {
       return (
@@ -192,7 +209,7 @@ class ShowScreenshot extends Component {
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded
             })}
-            onClick={this.handleExpandClick}
+            onClick={this.handleClick}
             aria-expanded={this.state.expanded}
             aria-label="Update"
           >
@@ -202,9 +219,9 @@ class ShowScreenshot extends Component {
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
             <UpdateScreenshotForm
-              newtitle={screenshot.newtitle}
-              newdescription={screenshot.newdescription}
-              newimagefile={screenshot.newimagefile}
+              title={this.state.screenshot.title}
+              description={this.state.screenshot.description}
+              imagefile={this.state.screenshot.imagefile}
               handleSubmit={this.handleSubmit}
               handleInputChange={this.handleInputChange}
             />

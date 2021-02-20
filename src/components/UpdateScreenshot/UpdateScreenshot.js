@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
-import { updateScreenshot } from '../../api/screenshot'
-import ScreenshotForm from './../../shared/ScreenshotForm'
+import { updateScreenshot, showScreenshot } from '../../api/screenshot'
+import UpdateScreenshotForm from './../../shared/UpdateScreenshotForm'
 import messages from '../AutoDismissAlert/messages'
 
 const styles = theme => ({
@@ -28,13 +28,29 @@ class UpdateScreenshot extends Component {
     super(props)
 
     this.state = {
-      screenshot: {
-        title: '',
-        description: '',
-        imagefile: '',
-        updated: false
-      }
+      screenshot: null,
+      updated: false
     }
+  }
+
+  componentDidMount () {
+    const { user, match, msgAlert } = this.props
+    showScreenshot(match.params.id, user)
+      .then(res => this.setState({ screenshot: res.data.screenshot }))
+      .then(() => {
+        msgAlert({
+          heading: 'Showing screenshot Successfully',
+          variant: 'success',
+          message: 'Make your screenshot edits here.'
+        })
+      })
+      .catch(err => {
+        msgAlert({
+          heading: 'Showing screenshot Failed',
+          variant: 'danger',
+          message: 'Screenshot is not displayed due to error: ' + err.message
+        })
+      })
   }
 
   // on file select
@@ -50,8 +66,13 @@ class UpdateScreenshot extends Component {
   //   this.setState({ screenshot: event.target.files[0] })
   // }
   handleInputChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value
+    event.persist()
+    this.setState(state => {
+      return {
+        screenshot: {
+          ...state.screenshot, [event.target.name]: event.target.value
+        }
+      }
     })
   }
 
@@ -61,20 +82,22 @@ class UpdateScreenshot extends Component {
       // console.log(this.state.title)
       // console.log(this.state.description)
       // console.log(this.state.imagefile)
-      const { user, msgAlert, history } = this.props
+      const { user, msgAlert, history, match } = this.props
+      const { screenshot } = this.state
       // const { screenshot } = this.state
-      updateScreenshot(user, this.props.match.params.id)
+      updateScreenshot(match.params.id, screenshot, user)
+        .then(res => this.setState({ updated: true }))
         .then(() => msgAlert({
           heading: 'Screenshot updated successfully!',
-          message: messages.createScreenshotSuccess,
+          message: messages.updateScreenshotSuccess,
           variant: 'success'
         }))
-        .then(() => history.push('/screenshot/:id'))
+        .then(() => history.push('/index-screenshot'))
         .catch(error => {
           this.setState({ screenshot: '' })
           msgAlert({
             heading: 'Update screenshot Failed with error: ' + error.message,
-            message: messages.createScreenshotFailure,
+            message: messages.updateScreenshotFailure,
             variant: 'danger'
           })
         })
@@ -101,12 +124,19 @@ class UpdateScreenshot extends Component {
     // }
 
     render () {
+      const { screenshot, updated } = this.state
+      if (!screenshot) {
+        return '...loading, forever!'
+      }
+      if (updated) {
+        return <Redirect to={'#/index-screenshots'} />
+      }
       return (
         <div>
-          <ScreenshotForm
-            title={this.state.screenshot.title}
-            description={this.state.screenshot.description}
-            imagefile={this.state.screenshot.imagefile}
+          <UpdateScreenshotForm
+            title={screenshot.title}
+            description={screenshot.description}
+            imagefile={screenshot.imagefile}
             handleSubmit={this.handleSubmit}
             handleInputChange={this.handleInputChange}
           />

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import Spinner from 'react-bootstrap/Spinner'
 // import withRouter so we have access to the match route prop
 import { withRouter, Redirect } from 'react-router-dom'
-import { showScreenshot, deleteScreenshot } from '../../api/screenshot'
+import { showScreenshot, deleteScreenshot, updateScreenshot } from '../../api/screenshot'
+
 import messages from '../AutoDismissAlert/messages'
 
 import Bgimage from './../../shared/bgimage.png'
@@ -17,9 +18,18 @@ import CardActions from '@material-ui/core/CardActions'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-// import FavoriteIcon from '@material-ui/icons/Favorite'
-// import ShareIcon from '@material-ui/icons/Share'
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+
+import UpdateScreenshotForm from './../../shared/UpdateScreenshotForm'
+
+// import FormControl from '@material-ui/core/FormControl'
+// import Form from 'react-bootstrap/Form'
+// import TextField from '@material-ui/core/TextField'
+// import Grid from '@material-ui/core/Grid'
+// import GridListTile from '@material-ui/core/GridListTile'
+// import GridList from '@material-ui/core/GridList'
+// import ListSubheader from '@material-ui/core/ListSubheader'
+
+// import Button from '@material-ui/core/Button'
 
 const styles = theme => ({
   card: {
@@ -49,11 +59,23 @@ class ShowScreenshot extends Component {
     super(props)
 
     this.state = {
-      screenshot: null,
+      screenshot: {
+        title: '',
+        description: '',
+        imagefile: '',
+        newtitle: this.props.newtitle,
+        newdescription: this.props.newdescription,
+        newimagefile: this.props.newimagefile
+      },
+      updated: false,
       deleted: false,
-      expanded: false,
-      show: false
+      expanded: false
     }
+  }
+  handleInputChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   componentDidMount () {
@@ -73,6 +95,34 @@ class ShowScreenshot extends Component {
           variant: 'danger'
         })
       })
+  }
+  componentDidUpdate () {
+    const { user, match } = this.props
+    if (!this.state.screenshot && this.state.updated === true) {
+      showScreenshot(match.params.id, user)
+        .then((res) => this.setState({ screenshot: res.data.screenshot }))
+    }
+  }
+
+  handleSubmit = async (event) => {
+    event.preventDefault()
+    const { user, msgAlert } = this.props
+    try {
+      await updateScreenshot(this.props.match.params.id, this.state, user)
+        .then(() => this.setState({ updated: true, screenshot: '' }))
+        .then(() => this.setState({ updated: false }))
+        .then(() => msgAlert({
+          heading: 'Updated Succesfully',
+          message: messages.updateScreenshotSuccess,
+          variant: 'success'
+        }))
+    } catch (err) {
+      msgAlert({
+        heading: 'Update Comment failed with error: ' + err.message,
+        message: messages.updateScreenshotFailure,
+        variant: 'danger'
+      })
+    }
   }
 
   handleExpandClick = () => {
@@ -101,15 +151,9 @@ class ShowScreenshot extends Component {
     }
   }
 
-  handleUpdateClick = () => {
-    const { history } = this.props
-    const path = '/update-screenshot/:id'
-    history.push(path)
-  }
-
   render () {
     const { classes } = this.props
-    const { screenshot, deleted } = this.state
+    const { deleted, screenshot } = this.state
 
     if (!screenshot) {
       return (
@@ -119,7 +163,7 @@ class ShowScreenshot extends Component {
       )
     }
 
-    // if the purchase is deleted
+    // if the screenshot is deleted
     if (deleted) {
       return <Redirect to="/screenshots/" />
     }
@@ -135,12 +179,14 @@ class ShowScreenshot extends Component {
           image={Bgimage}
           title="screenshot"
         />
+        <CardContent>
+          <Typography component="p">
+            {screenshot.description}
+          </Typography>
+        </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Delete" className={classes.margin} onClick={this.handleDeleteClick}>
             <span className="material-icons">delete_outline</span>
-          </IconButton>
-          <IconButton aria-label="Update" onClick={this.handleUpdateClick}>
-            <span className="material-icons">update</span>
           </IconButton>
           <IconButton
             className={classnames(classes.expand, {
@@ -148,17 +194,20 @@ class ShowScreenshot extends Component {
             })}
             onClick={this.handleExpandClick}
             aria-expanded={this.state.expanded}
-            aria-label="Show more"
+            aria-label="Update"
           >
-            <span className="material-icons">expand_more</span>
+            <span className="material-icons">update</span>
           </IconButton>
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>Description:</Typography>
-            <Typography paragraph>
-              {screenshot.description}
-            </Typography>
+            <UpdateScreenshotForm
+              newtitle={screenshot.newtitle}
+              newdescription={screenshot.newdescription}
+              newimagefile={screenshot.newimagefile}
+              handleSubmit={this.handleSubmit}
+              handleInputChange={this.handleInputChange}
+            />
           </CardContent>
         </Collapse>
       </Card>

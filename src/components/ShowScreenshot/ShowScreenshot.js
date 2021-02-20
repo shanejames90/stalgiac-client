@@ -99,7 +99,7 @@ class ShowScreenshot extends Component {
         [name]: value
       }
       // console.log({ ...updatedField, ...currState.screenshot })
-      // console.log({ ...currState.screenshot, ...updatedField })
+      console.log({ ...currState.screenshot, ...updatedField })
       const newScreenshot = {
         ...currState.screenshot,
         ...updatedField
@@ -113,7 +113,7 @@ class ShowScreenshot extends Component {
     e.preventDefault()
     const { user, msgAlert, match } = this.props
     try {
-      await updateScreenshot(match.params.id, this.state, user)
+      await updateScreenshot(match.params.id, this.state.screenshot, user)
         .then(() => this.setState({ updated: true }))
         // .then(() => this.setState({ updated: false }))
         .then(() => msgAlert({
@@ -136,14 +136,14 @@ class ShowScreenshot extends Component {
     }
   }
 
-  // handleExpandClick = () => {
-  //   this.setState(state => ({ expanded: !state.expanded }))
-  // }
-
-  handleClick = () => {
-    const { history } = this.props
-    history.push(`/update-screenshot/${this.props.match.params.id}`)
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }))
   }
+
+  // handleClick = () => {
+  //   const { history } = this.props
+  //   history.push(`/update-screenshot/${this.props.match.params.id}`)
+  // }
 
   handleDeleteClick = async (event) => {
     event.preventDefault()
@@ -209,7 +209,7 @@ class ShowScreenshot extends Component {
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded
             })}
-            onClick={this.handleClick}
+            onClick={this.handleExpandClick}
             aria-expanded={this.state.expanded}
             aria-label="Update"
           >

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 import { updateScreenshot, showScreenshot } from '../../api/screenshot'
@@ -92,7 +92,7 @@ class UpdateScreenshot extends Component {
           message: messages.updateScreenshotSuccess,
           variant: 'success'
         }))
-        .then(() => history.push('/index-screenshot'))
+        .then(() => history.push(`/index-screenshot/${match.params.id}`))
         .catch(error => {
           this.setState({ screenshot: '' })
           msgAlert({
@@ -124,12 +124,9 @@ class UpdateScreenshot extends Component {
     // }
 
     render () {
-      const { screenshot, updated } = this.state
+      const { screenshot } = this.state
       if (!screenshot) {
         return '...loading, forever!'
-      }
-      if (updated) {
-        return <Redirect to={'#/index-screenshots'} />
       }
       return (
         <div>

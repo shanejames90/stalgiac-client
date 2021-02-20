@@ -7,5 +7,9 @@ export default {
   changePasswordSuccess: 'Password changed successfully!',
   changePasswordFailure: 'Failed to change passwords. Check your old password and try again.',
   createScreenshotSuccess: 'Awesome screenshot uploaded with ease!',
-  createScreenshotFailure: 'Failed to create your screenshot. Check your file and try again.'
+  createScreenshotFailure: 'Failed to create your screenshot. Check your file and try again.',
+  deleteScreenshotSuccess: 'Successfully deleted your screenshot.',
+  deleteScreenshotFailure: 'Failed to delete your screenshot.',
+  updateScreenshotSuccess: 'Successfully updated your screenshot!',
+  updateScreenshotFailure: 'Failed to update your screenshot.'
 }

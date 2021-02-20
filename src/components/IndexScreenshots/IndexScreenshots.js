@@ -1,6 +1,6 @@
 // imports
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { indexScreenshots } from '../../api/screenshot'
 import { withStyles } from '@material-ui/core/styles'
 // import ScreenshotList from './../../shared/ScreenshotList'
@@ -8,7 +8,7 @@ import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
 import ListSubheader from '@material-ui/core/ListSubheader'
-import IconButton from '@material-ui/core/IconButton'
+// import IconButton from '@material-ui/core/IconButton'
 // import InfoIcon from '@material-ui/icons/Info'
 import Bgimage from './../../shared/bgimage.png'
 
@@ -62,9 +62,9 @@ class IndexScreenshots extends Component {
             title={screenshot.title}
             subtitle={screenshot.imagefile}
             actionIcon={
-              <IconButton className={classes.icon}>
+              <Link to={`/screenshots/${screenshot.id}`}>
                 <span className="material-icons">link</span>
-              </IconButton>
+              </Link>
             }
           />
         </GridListTile>

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
-import { postScreenshot } from '../../api/screenshot'
+import { updateScreenshot } from '../../api/screenshot'
 import ScreenshotForm from './../../shared/ScreenshotForm'
 import messages from '../AutoDismissAlert/messages'
 
@@ -23,7 +23,7 @@ const styles = theme => ({
   }
 })
 
-class PostScreenshot extends Component {
+class UpdateScreenshot extends Component {
   constructor (props) {
     super(props)
 
@@ -31,7 +31,8 @@ class PostScreenshot extends Component {
       screenshot: {
         title: '',
         description: '',
-        imagefile: ''
+        imagefile: '',
+        updated: false
       }
     }
   }
@@ -62,17 +63,17 @@ class PostScreenshot extends Component {
       // console.log(this.state.imagefile)
       const { user, msgAlert, history } = this.props
       // const { screenshot } = this.state
-      postScreenshot(user, this.state)
+      updateScreenshot(user, this.props.match.params.id)
         .then(() => msgAlert({
-          heading: 'New screenshot added successfully!',
+          heading: 'Screenshot updated successfully!',
           message: messages.createScreenshotSuccess,
           variant: 'success'
         }))
-        .then(() => history.push('/index-screenshots'))
+        .then(() => history.push('/screenshot/:id'))
         .catch(error => {
           this.setState({ screenshot: '' })
           msgAlert({
-            heading: 'Screenshot Failed with error: ' + error.message,
+            heading: 'Update screenshot Failed with error: ' + error.message,
             message: messages.createScreenshotFailure,
             variant: 'danger'
           })
@@ -114,4 +115,4 @@ class PostScreenshot extends Component {
     }
 }
 
-export default withRouter(withStyles(styles)(PostScreenshot))
+export default withRouter(withStyles(styles)(UpdateScreenshot))

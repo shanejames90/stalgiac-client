@@ -11,6 +11,8 @@ import SignOut from './components/SignOut/SignOut'
 import ChangePassword from './components/ChangePassword/ChangePassword'
 import PostScreenshot from './components/PostScreenshot/PostScreenshot'
 import IndexScreenshots from './components/IndexScreenshots/IndexScreenshots'
+import ShowScreenshot from './components/ShowScreenshot/ShowScreenshot'
+import UpdateScreenshot from './components/UpdateScreenshot/UpdateScreenshot'
 
 class App extends Component {
   constructor (props) {
@@ -67,11 +69,17 @@ class App extends Component {
           <AuthenticatedRoute user={user} path='/change-password' render={() => (
             <ChangePassword msgAlert={this.msgAlert} user={user} />
           )} />
-          <AuthenticatedRoute user={user} path='/screenshots' render={() => (
+          <AuthenticatedRoute user={user} exact path='/screenshots' render={() => (
             <PostScreenshot msgAlert={this.msgAlert} user={user} />
           )} />
           <AuthenticatedRoute user={user} exact path='/index-screenshots' render={({ props }) => (
             <IndexScreenshots msgAlert={this.msgAlert} user={user} />
+          )} />
+          <AuthenticatedRoute user={user} exact path='/screenshots/:id' render={({ props }) => (
+            <ShowScreenshot msgAlert={this.msgAlert} user={user} />
+          )} />
+          <AuthenticatedRoute user={user} exact path='/update-screenshot/:id' render={({ props }) => (
+            <UpdateScreenshot msgAlert={this.msgAlert} user={user} />
           )} />
         </main>
       </Fragment>

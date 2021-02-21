@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom'
 import { v4 as uuid } from 'uuid'
 
 import AuthenticatedRoute from './components/AuthenticatedRoute/AuthenticatedRoute'
-import AutoDismissAlert from './components/AutoDismissAlert/AutoDismissAlert'
+// import AutoDismissAlert from './components/AutoDismissAlert/AutoDismissAlert'
 import Header from './components/Header/Header'
 import SignUp from './components/SignUp/SignUp'
 import SignIn from './components/SignIn/SignIn'
@@ -13,6 +13,8 @@ import PostScreenshot from './components/PostScreenshot/PostScreenshot'
 import IndexScreenshots from './components/IndexScreenshots/IndexScreenshots'
 import ShowScreenshot from './components/ShowScreenshot/ShowScreenshot'
 import UpdateScreenshot from './components/UpdateScreenshot/UpdateScreenshot'
+
+import CustomizedSnackbars from './components/AutoDismissAlert/SnackAlerts.js'
 
 class App extends Component {
   constructor (props) {
@@ -47,9 +49,8 @@ class App extends Component {
       <Fragment>
         <Header user={user} />
         {msgAlerts.map(msgAlert => (
-          <AutoDismissAlert
+          <CustomizedSnackbars
             key={msgAlert.id}
-            heading={msgAlert.heading}
             variant={msgAlert.variant}
             message={msgAlert.message}
             id={msgAlert.id}

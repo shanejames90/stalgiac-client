@@ -111,6 +111,8 @@ class ShowScreenshot extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
+    e.target.reset()
+    this.setState({ expanded: false })
     const { user, msgAlert, match } = this.props
     try {
       await updateScreenshot(match.params.id, this.state.screenshot, user)
@@ -203,7 +205,7 @@ class ShowScreenshot extends Component {
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Delete" className={classes.margin} onClick={this.handleDeleteClick}>
-            <span className="material-icons">delete_outline</span>
+            <span className="material-icons" style={{ color: '#FC4445' }}>delete_outline</span>
           </IconButton>
           <IconButton
             className={classnames(classes.expand, {
@@ -213,7 +215,7 @@ class ShowScreenshot extends Component {
             aria-expanded={this.state.expanded}
             aria-label="Update"
           >
-            <span className="material-icons">update</span>
+            <span className="material-icons" style={{ color: '#4285F4' }}>update</span>
           </IconButton>
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>

@@ -7,6 +7,8 @@ import messages from '../AutoDismissAlert/messages'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
+import { withSnackbar } from 'notistack'
+
 class SignIn extends Component {
   constructor (props) {
     super(props)
@@ -24,22 +26,17 @@ class SignIn extends Component {
   onSignIn = event => {
     event.preventDefault()
 
-    const { msgAlert, history, setUser } = this.props
-
+    const { history, setUser, enqueueSnackbar } = this.props
     signIn(this.state)
       .then(res => setUser(res.data.user))
-      .then(() => msgAlert({
-        heading: 'Sign In Success',
-        message: messages.signInSuccess,
+      .then(() => enqueueSnackbar(messages.signInSuccess, {
         variant: 'success'
       }))
       .then(() => history.push('/'))
       .catch(error => {
         this.setState({ email: '', password: '' })
-        msgAlert({
-          heading: 'Sign In Failed with error: ' + error.message,
-          message: messages.signInFailure,
-          variant: 'danger'
+        enqueueSnackbar(messages.signInFailure + error.message, {
+          variant: 'error'
         })
       })
   }
@@ -87,4 +84,4 @@ class SignIn extends Component {
   }
 }
 
-export default withRouter(SignIn)
+export default withRouter(withSnackbar(SignIn))

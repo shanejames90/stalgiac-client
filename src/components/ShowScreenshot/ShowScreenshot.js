@@ -177,7 +177,7 @@ class ShowScreenshot extends Component {
     }
 
     return (
-      <Card className={classes.card}>
+      <Card className={classes.card} style={{ marginLeft: '30px' }}>
         <CardHeader
           title={screenshot.title}
           subheader={screenshot.imagefile}

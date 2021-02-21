@@ -2,13 +2,22 @@ import React, { Fragment } from 'react'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 // import Icon from '@material-ui/core/Icon'
+import Tooltip from '@material-ui/core/Tooltip'
+import MenuAppBar from './Appbar.js'
+import BottomAppBar from './Bottomnav.js'
 
 const authenticatedOptions = (
   <Fragment>
-    <Nav.Link href="#screenshots"><span className="material-icons">add_a_photo</span></Nav.Link>
-    <Nav.Link href="#index-screenshots"><span className="material-icons">view_list</span></Nav.Link>
-    <Nav.Link href="#change-password">Change Password</Nav.Link>
-    <Nav.Link href="#sign-out">Sign Out</Nav.Link>
+    <Tooltip title="Add a Screenshot" aria-label="Add a Screenshot">
+      <Nav.Link href="#screenshots"><span className="material-icons">add_a_photo</span></Nav.Link>
+    </Tooltip>
+    <Tooltip title="View your screenshots" aria-label="View your screenshots">
+      <Nav.Link href="#index-screenshots"><span className="material-icons">view_list</span></Nav.Link>
+    </Tooltip>
+    <MenuAppBar/>
+    {/* <Nav.Link href="#change-password">Change Password</Nav.Link>
+    <Nav.Link href="#sign-out">Sign Out</Nav.Link> */}
+    <BottomAppBar />
   </Fragment>
 )
 
@@ -21,7 +30,9 @@ const unauthenticatedOptions = (
 
 const alwaysOptions = (
   <Fragment>
-    <Nav.Link href="#/"><span className="material-icons">home</span></Nav.Link>
+    <Tooltip title="Home" aria-label="Home">
+      <Nav.Link href="#/"><span className="material-icons">home</span></Nav.Link>
+    </Tooltip>
   </Fragment>
 )
 

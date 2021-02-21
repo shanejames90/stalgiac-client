@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid'
 import AuthenticatedRoute from './components/AuthenticatedRoute/AuthenticatedRoute'
 // import AutoDismissAlert from './components/AutoDismissAlert/AutoDismissAlert'
 import Header from './components/Header/Header'
+import Home from './components/Home/Home'
 import SignUp from './components/SignUp/SignUp'
 import SignIn from './components/SignIn/SignIn'
 import SignOut from './components/SignOut/SignOut'
@@ -15,6 +16,7 @@ import ShowScreenshot from './components/ShowScreenshot/ShowScreenshot'
 import UpdateScreenshot from './components/UpdateScreenshot/UpdateScreenshot'
 
 import CustomizedSnackbars from './components/AutoDismissAlert/SnackAlerts.js'
+// import { withRouter } from 'react-router-dom'
 
 class App extends Component {
   constructor (props) {
@@ -58,6 +60,9 @@ class App extends Component {
           />
         ))}
         <main className="container">
+          <Route path='/homepath' render={() => (
+            <Home />
+          )} />
           <Route path='/sign-up' render={() => (
             <SignUp msgAlert={this.msgAlert} setUser={this.setUser} />
           )} />

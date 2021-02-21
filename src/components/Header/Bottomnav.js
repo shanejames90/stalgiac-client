@@ -44,7 +44,7 @@ function BottomAppBar (props) {
   const { classes } = props
   return (
     <React.Fragment>
-      <AppBar position="fixed" color="white" className={classes.appBar}>
+      <AppBar position="fixed" color="inherit" className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
           <Tooltip title="Add a Screenshot" aria-label="Add a Screenshot">
             <Fab color="secondary" aria-label="Add" className={classes.fabButton}>

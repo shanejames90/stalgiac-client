@@ -99,12 +99,12 @@ class ShowScreenshot extends Component {
         [name]: value
       }
       // console.log({ ...updatedField, ...currState.screenshot })
-      console.log({ ...currState.screenshot, ...updatedField })
+      // console.log({ ...currState.screenshot, ...updatedField })
       const newScreenshot = {
         ...currState.screenshot,
         ...updatedField
       }
-      console.log(newScreenshot)
+      // console.log(newScreenshot)
       return { screenshot: newScreenshot }
     })
   }

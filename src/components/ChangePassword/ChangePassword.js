@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom'
 import { changePassword } from '../../api/auth'
 import messages from '../AutoDismissAlert/messages'
 
+import { withSnackbar } from 'notistack'
+
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
@@ -24,21 +26,17 @@ class ChangePassword extends Component {
   onChangePassword = event => {
     event.preventDefault()
 
-    const { msgAlert, history, user } = this.props
+    const { enqueueSnackbar, history, user } = this.props
 
     changePassword(this.state, user)
-      .then(() => msgAlert({
-        heading: 'Change Password Success',
-        message: messages.changePasswordSuccess,
+      .then(() => enqueueSnackbar(messages.changePasswordSuccess, {
         variant: 'success'
       }))
       .then(() => history.push('/'))
       .catch(error => {
         this.setState({ oldPassword: '', newPassword: '' })
-        msgAlert({
-          heading: 'Change Password Failed with error: ' + error.message,
-          message: messages.changePasswordFailure,
-          variant: 'danger'
+        enqueueSnackbar(messages.changePasswordFailure + error.message, {
+          variant: 'error'
         })
       })
   }
@@ -86,4 +84,4 @@ class ChangePassword extends Component {
   }
 }
 
-export default withRouter(ChangePassword)
+export default withRouter(withSnackbar(ChangePassword))

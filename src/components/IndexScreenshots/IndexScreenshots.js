@@ -11,6 +11,8 @@ import ListSubheader from '@material-ui/core/ListSubheader'
 // import IconButton from '@material-ui/core/IconButton'
 // import InfoIcon from '@material-ui/icons/Info'
 import Bgimage from './../../shared/bgimage.png'
+import { withSnackbar } from 'notistack'
+import messages from '../AutoDismissAlert/messages'
 
 const styles = theme => ({
   root: {
@@ -39,10 +41,13 @@ class IndexScreenshots extends Component {
   }
 
   componentDidMount () {
-    const { user } = this.props
+    const { user, enqueueSnackbar } = this.props
     indexScreenshots(user)
       // .then(res => console.log(res.data))
       .then(res => this.setState({ screenshots: res.data.screenshots }))
+      .then(() => enqueueSnackbar(messages.indexScreenshotsSuccess, {
+        variant: 'success'
+      }))
       .catch(console.error)
   }
 
@@ -84,4 +89,4 @@ class IndexScreenshots extends Component {
 }
 
 // exports
-export default withRouter(withStyles(styles)(IndexScreenshots))
+export default withRouter(withStyles(styles)(withSnackbar(IndexScreenshots)))

@@ -5,6 +5,7 @@ import { withRouter, Redirect } from 'react-router-dom'
 import { showScreenshot, deleteScreenshot, updateScreenshot } from '../../api/screenshot'
 
 import messages from '../AutoDismissAlert/messages'
+import { withSnackbar } from 'notistack'
 
 import Bgimage from './../../shared/bgimage.png'
 
@@ -71,22 +72,18 @@ class ShowScreenshot extends Component {
   }
 
   async componentDidMount () {
-    const { user, match, msgAlert } = this.props
+    const { user, match, enqueueSnackbar } = this.props
     // request single screenshot
     try {
       await showScreenshot(match.params.id, user)
         .then(res => this.setState({ screenshot: res.data.screenshot }))
         .then(() => this.setState({ updated: false }))
-        .then(() => msgAlert({
-          heading: 'Showing Screenshot Successfully',
-          message: 'Your screenshot is now displayed.',
+        .then(() => enqueueSnackbar(messages.showScreenshotSuccess, {
           variant: 'success'
         }))
     } catch (err) {
-      msgAlert({
-        heading: 'Failed to show your screenshot',
-        message: 'Failed to show screenshot with error: ' + err.message,
-        variant: 'danger'
+      enqueueSnackbar(messages.showScreenshotFailure + err.message, {
+        variant: 'error'
       })
     }
   }
@@ -113,21 +110,17 @@ class ShowScreenshot extends Component {
     e.preventDefault()
     e.target.reset()
     this.setState({ expanded: false })
-    const { user, msgAlert, match } = this.props
+    const { user, enqueueSnackbar, match } = this.props
     try {
       await updateScreenshot(match.params.id, this.state.screenshot, user)
         .then(() => this.setState({ updated: true }))
         // .then(() => this.setState({ updated: false }))
-        .then(() => msgAlert({
-          heading: 'Updated Succesfully',
-          message: messages.updateScreenshotSuccess,
+        .then(() => enqueueSnackbar(messages.updateScreenshotSuccess, {
           variant: 'success'
         }))
     } catch (err) {
-      msgAlert({
-        heading: 'Update Comment failed with error: ' + err.message,
-        message: messages.updateScreenshotFailure,
-        variant: 'danger'
+      enqueueSnackbar(messages.updateScreenshotFailure + err.message, {
+        variant: 'error'
       })
     }
   }
@@ -149,22 +142,18 @@ class ShowScreenshot extends Component {
 
   handleDeleteClick = async (event) => {
     event.preventDefault()
-    const { msgAlert, user, history } = this.props
+    const { enqueueSnackbar, user, history } = this.props
 
     try {
       await deleteScreenshot(this.props.match.params.id, user)
         .then(() => this.setState({ deleted: true }))
         .then(() => history.push('/index-screenshots'))
-        .then(() => msgAlert({
-          heading: 'Deleted Succesfully',
-          message: messages.deleteScreenshotSuccess,
+        .then(() => enqueueSnackbar(messages.deleteScreenshotSuccess, {
           variant: 'success'
         }))
     } catch (err) {
-      msgAlert({
-        heading: 'Update Comment failed with error: ' + err.message,
-        message: messages.deleteScreenshotFailure,
-        variant: 'danger'
+      enqueueSnackbar(messages.deleteScreenshotFailure + err.message, {
+        variant: 'error'
       })
     }
   }
@@ -235,4 +224,4 @@ class ShowScreenshot extends Component {
 }
 
 // exports
-export default withRouter(withStyles(styles)(ShowScreenshot))
+export default withRouter(withStyles(styles)(withSnackbar(ShowScreenshot)))

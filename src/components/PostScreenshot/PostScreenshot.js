@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { postScreenshot } from '../../api/screenshot'
 import ScreenshotForm from './../../shared/ScreenshotForm'
 import messages from '../AutoDismissAlert/messages'
+import { withSnackbar } from 'notistack'
 
 const styles = theme => ({
   root: {
@@ -66,7 +67,7 @@ class PostScreenshot extends Component {
       // console.log(this.state.title)
       // console.log(this.state.description)
       // console.log(this.state.imagefile)
-      const { user, msgAlert, history } = this.props
+      const { user, enqueueSnackbar, history } = this.props
       const { screenshot } = this.state
       // const { screenshot } = this.state
       postScreenshot(user, screenshot)
@@ -74,18 +75,14 @@ class PostScreenshot extends Component {
           this.setState({ createdId: res.data.screenshot.id })
           return res
         })
-        .then(() => msgAlert({
-          heading: 'New screenshot added successfully!',
-          message: messages.createScreenshotSuccess,
+        .then(() => enqueueSnackbar(messages.createScreenshotSuccess, {
           variant: 'success'
         }))
         .then(() => history.push('/index-screenshots'))
         .catch(error => {
           this.setState({ screenshot: '' })
-          msgAlert({
-            heading: 'Screenshot Failed with error: ' + error.message,
-            message: messages.createScreenshotFailure,
-            variant: 'danger'
+          enqueueSnackbar(messages.createScreenshotFailure + error.message, {
+            variant: 'error'
           })
         })
     }
@@ -125,4 +122,4 @@ class PostScreenshot extends Component {
     }
 }
 
-export default withRouter(withStyles(styles)(PostScreenshot))
+export default withRouter(withStyles(styles)(withSnackbar(PostScreenshot)))

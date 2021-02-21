@@ -4,14 +4,14 @@ import { withRouter } from 'react-router-dom'
 import { signOut } from '../../api/auth'
 import messages from '../AutoDismissAlert/messages'
 
+import { withSnackbar } from 'notistack'
+
 class SignOut extends Component {
   componentDidMount () {
-    const { msgAlert, history, clearUser, user } = this.props
+    const { enqueueSnackbar, history, clearUser, user } = this.props
 
     signOut(user)
-      .finally(() => msgAlert({
-        heading: 'Signed Out Successfully',
-        message: messages.signOutSuccess,
+      .finally(() => enqueueSnackbar(messages.signOutSuccess, {
         variant: 'success'
       }))
       .finally(() => history.push('/'))
@@ -23,4 +23,4 @@ class SignOut extends Component {
   }
 }
 
-export default withRouter(SignOut)
+export default withRouter(withSnackbar(SignOut))

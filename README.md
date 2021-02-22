@@ -63,8 +63,8 @@ Set up:
 + src/api/auth folder contains auth requests to api
 + src/api/screenshots contains screenshot CRUD requests to api.
 + Configure routes in src/App.
-+ Individual components are listes in the src/components folder.
++ Individual components are listed in the src/components folder.
 + Forms can be found in the src/shared folder.
 
 ### Future Plans, Problems to solve #
-For future versions of Stalgiac, there a few things to implement. First off, this is somewhat trivial, however, the view for changing a password needs to be done via a modal to match sign in and sign up. Also, OCR technology will be added to search the text of uploaded screenshots.  This will allow a user to search for specific within the actual screenshot.
+For future versions of Stalgiac, there a few things to implement. First off, this is somewhat trivial, however, the view for changing a password needs to be done via a modal to match sign in and sign up. Also, OCR technology will be added to search the text of uploaded screenshots.  This will allow a user to search for specific text within the actual screenshot.

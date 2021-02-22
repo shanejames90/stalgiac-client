@@ -11,6 +11,10 @@ import TextField from '@material-ui/core/TextField'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridList from '@material-ui/core/GridList'
 import ListSubheader from '@material-ui/core/ListSubheader'
+// import IconButton from '@material-ui/core/IconButton'
+// import InputAdornment from '@material-ui/core/InputAdornment'
+// import Visibility from '@material-ui/icons/Visibility'
+// import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 import Button from '@material-ui/core/Button'
 // import AccountCircle from '@material-ui/icons/AccountCircle'
@@ -33,20 +37,22 @@ const styles = theme => ({
   }
 })
 
-function ScreenshotForm (props) {
-  const { classes, handleSubmit, handleInputChange } = props
+function SignUpForm (props) {
+  const { classes, handleSubmit, handleInputChange, email, password, passwordConfirmation } = props
 
   return (
     <div className={classes.root}>
       <GridList cellHeight={150} className={classes.gridList}>
         <GridListTile cols={1} style={{ height: 'auto', marginTop: '' }}>
-          <ListSubheader component="div">New Screenshot</ListSubheader>
+          <ListSubheader component="div">Sign In</ListSubheader>
           <Form className={classes.container} autoComplete="off" onSubmit={handleSubmit}>
             <FormControl className={classes.margin}>
               <TextField
+                required
                 id="outlined-search"
-                label="Title"
-                name="title"
+                label="Email"
+                name="email"
+                value={email}
                 onChange={handleInputChange}
                 className={classes.textField}
                 margin="normal"
@@ -55,39 +61,38 @@ function ScreenshotForm (props) {
             </FormControl>
             <FormControl className={classes.margin}>
               <TextField
+                required
                 id="outlined-multiline-static"
-                label="Description"
-                multiline
-                rows="4"
-                name="description"
+                label="Password"
+                name="password"
+                value={password}
                 onChange={handleInputChange}
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                InputProps={{
+                }}
               />
             </FormControl>
-            {/* <Grid container spacing={8} alignItems="flex-start">
-              <Grid item>
-                <input type="file" onChange={onScreenshotChange} />
-              </Grid>
-              <Grid item> */}
             <FormControl className={classes.margin}>
               <TextField
-                id="outlined-search"
-                label="Screenshot Url"
-                name="imagefile"
+                required
+                id="outlined-multiline-static"
+                label="Password Confirmation"
+                name="passwordConfirmation"
+                value={passwordConfirmation}
                 onChange={handleInputChange}
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                InputProps={{
+                }}
               />
             </FormControl>
-            <Button type="submit" variant="contained" style={{ marginLeft: '10px', color: '#8EE4AF' }}>
-                  Upload
-              <span className="material-icons">cloud_upload</span>
+            <Button type="submit" variant="contained" style={{ marginLeft: '10px', color: '#F070A1' }}>
+                  Submit
+              <span className="material-icons">perm_contact_calendar</span>
             </Button>
-            {/* </Grid>
-            </Grid> */}
           </Form>
         </GridListTile>
       </GridList>
@@ -95,8 +100,8 @@ function ScreenshotForm (props) {
   )
 }
 
-ScreenshotForm.propTypes = {
+SignUpForm.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(ScreenshotForm)
+export default withStyles(styles)(SignUpForm)

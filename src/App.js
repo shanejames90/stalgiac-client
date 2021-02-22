@@ -14,7 +14,7 @@ import ChangePassword from './components/ChangePassword/ChangePassword'
 import PostScreenshot from './components/PostScreenshot/PostScreenshot'
 import IndexScreenshots from './components/IndexScreenshots/IndexScreenshots'
 import ShowScreenshot from './components/ShowScreenshot/ShowScreenshot'
-import UpdateScreenshot from './components/UpdateScreenshot/UpdateScreenshot'
+// import UpdateScreenshot from './components/UpdateScreenshot/UpdateScreenshot'
 import HomePageHero from './components/HomePageHero/HomePageHero'
 import HomePageHowItWorks from './components/HomePageHero/HomePageHowItWorks'
 
@@ -91,9 +91,6 @@ class App extends Component {
           )} />
           <AuthenticatedRoute user={user} exact path='/screenshots/:id' render={({ props }) => (
             <ShowScreenshot msgAlert={this.msgAlert} user={user} />
-          )} />
-          <AuthenticatedRoute user={user} exact path='/update-screenshot/:id' render={({ props }) => (
-            <UpdateScreenshot msgAlert={this.msgAlert} user={user} />
           )} />
         </main>
       </Fragment>

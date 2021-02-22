@@ -6,7 +6,10 @@ import Container from 'react-bootstrap/Container'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
-const styles = (theme) => ({
+const styles = theme => ({
+  margin: {
+    margin: theme.spacing.unit
+  },
   root: {
     display: 'flex',
     backgroundColor: theme.palette.secondary.light,
@@ -48,6 +51,9 @@ const styles = (theme) => ({
   },
   button: {
     // marginTop: theme.spacing(8)
+  },
+  filler: {
+    heigh: '100px'
   }
 })
 
@@ -118,6 +124,7 @@ function ProductHowItWorks (props) {
         >
           Get started
         </Button>
+        <div className={classes.filler}></div>
       </Container>
     </section>
   )

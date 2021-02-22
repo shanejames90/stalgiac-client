@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { withStyles } from '@material-ui/core/styles'
 import Container from 'react-bootstrap/Container'
+
 // import { spacing } from '@material-ui/system'
 
 const styles = (theme) => ({
@@ -59,13 +60,12 @@ function HomePageHeroLayout (props) {
         {children}
         <div className={classes.backdrop} />
         <div className={clsx(classes.background, backgroundClassName)} />
-        <img
+        <image
           className={classes.arrowDown}
-          src='https://p7.hiclipart.com/preview/532/502/554/computer-icons-ifp-school-arrow-scrolling-down-arrow.jpg'
           height="16"
           width="12"
           alt="arrow down"
-        />
+        ><span className="material-icons">arrow_downward</span></image>
       </Container>
     </section>
   )

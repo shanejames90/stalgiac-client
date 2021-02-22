@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { withStyles, createMuiTheme } from '@material-ui/core/styles'
@@ -6,6 +6,12 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import HomePageHeroLayout from './HomePageHeroLayout'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import SignUpModal from './../Header/SignUpModal'
+import React, { useState } from 'react'
+import messages from '../AutoDismissAlert/messages'
+import { signUp, signIn } from '../../api/auth'
+import { withSnackbar } from 'notistack'
+
 const backgroundImage = 'https://images.unsplash.com/photo-1593642532400-2682810df593?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
 
 const styles = (theme) => createMuiTheme({
@@ -31,7 +37,46 @@ const styles = (theme) => createMuiTheme({
 })
 
 function HomePageHero (props) {
+  const [state, setState] = useState({ email: '', password: '', passwordConfirmation: '', openSignUp: false })
   const { classes } = props
+  const handleInputChange = (event) => {
+    const { name, value } = event.target
+    setState(prevState => ({
+      ...prevState, [name]: value
+    }))
+  }
+
+  const handleClickSignUpOpen = () => {
+    setState({ openSignUp: true })
+  }
+
+  const handleSignUpClose = (e) => {
+    e.stopPropagation()
+    setState({ openSignUp: false })
+  }
+
+  const handleSignUpSubmit = event => {
+    event.preventDefault()
+
+    const { enqueueSnackbar, history, setUser } = props
+
+    signUp(state)
+      .then(() => signIn(state))
+      .then(res => setUser(res.data.user))
+      .then(() => setState({ openSignUp: false }))
+      // clear forms
+      .then(() => setState({ email: '', password: '', passwordConfirmation: '' }))
+      .then(() => enqueueSnackbar(messages.signUpSuccess, {
+        variant: 'success'
+      }))
+      .then(() => history.push('/screenshots'))
+      .catch(error => {
+        setState({ email: '', password: '', passwordConfirmation: '' })
+        enqueueSnackbar(messages.signUpFailure + error.message, {
+          variant: 'error'
+        })
+      })
+  }
 
   return (
 
@@ -45,16 +90,17 @@ function HomePageHero (props) {
         <Typography color="inherit" align="center" variant="h5" className={classes.h5}>
           Upload them to Stalgiac.
         </Typography>
-        <Button
-          color="secondary"
-          variant="contained"
-          size="large"
-          className={classes.button}
-          component="a"
-          href="/sign-up"
-        >
-          Register
-        </Button>
+        <Typography variant="h5" color="inherit" className={classes.menuButton}>
+          <Button variant="contained" color="secondary" onClick={handleClickSignUpOpen} style={{ color: '#FFFFFF' }}><SignUpModal
+            email={state.email}
+            password={state.password}
+            passwordConfirmation={state.passwordConfirmation}
+            open={state.openSignUp}
+            handleInputChange={handleInputChange}
+            handleSignUpClose={handleSignUpClose}
+            handleClickSignUpOpen={handleClickSignUpOpen}
+            handleSignUpSubmit={handleSignUpSubmit}
+          />Sign Up</Button></Typography>
         <Typography variant="body2" color="inherit" className={classes.more}>
           Stalgiac will organize your screenshots!
         </Typography>
@@ -67,4 +113,4 @@ HomePageHero.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(HomePageHero))
+export default withRouter(withStyles(styles)(withSnackbar(HomePageHero)))

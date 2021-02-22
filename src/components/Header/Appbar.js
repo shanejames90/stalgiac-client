@@ -54,7 +54,7 @@ class MenuAppBar extends React.Component {
             onClick={this.handleMenu}
             color="inherit"
           >
-            <span className="material-icons" style={{ color: '#D1D7E0' }}>account_circle</span>
+            <span className="material-icons" style={{ color: '#F070A1' }}>account_circle</span>
           </IconButton>
         </Tooltip>
         <Menu

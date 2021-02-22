@@ -9,10 +9,10 @@ import BottomAppBar from './Bottomnav.js'
 const authenticatedOptions = (
   <Fragment>
     <Tooltip title="Add a Screenshot" aria-label="Add a Screenshot">
-      <Nav.Link href="#screenshots"><span className="material-icons">add_a_photo</span></Nav.Link>
+      <Nav.Link href="#screenshots" style={{ color: '#16FFBD' }}><span className="material-icons">add_a_photo</span></Nav.Link>
     </Tooltip>
     <Tooltip title="View your screenshots" aria-label="View your screenshots">
-      <Nav.Link href="#index-screenshots"><span className="material-icons">view_list</span></Nav.Link>
+      <Nav.Link href="#index-screenshots" style={{ color: '#FFFFFF' }}><span className="material-icons">view_list</span></Nav.Link>
     </Tooltip>
     <MenuAppBar/>
     {/* <Nav.Link href="#change-password">Change Password</Nav.Link>
@@ -23,7 +23,7 @@ const authenticatedOptions = (
 
 const unauthenticatedOptions = (
   <Fragment>
-    <Nav.Link href="#sign-up">Sign Up</Nav.Link>
+    <Nav.Link href="#sign-up" style={{ color: '#FC4445' }}>Sign Up</Nav.Link>
     <Nav.Link href="#sign-in">Sign In</Nav.Link>
   </Fragment>
 )
@@ -31,13 +31,13 @@ const unauthenticatedOptions = (
 const alwaysOptions = (
   <Fragment>
     <Tooltip title="Home" aria-label="Home">
-      <Nav.Link href="#/"><span className="material-icons">home</span></Nav.Link>
+      <Nav.Link href="#/" style={{ color: '#FFFFFF' }}><span className="material-icons">home</span></Nav.Link>
     </Tooltip>
   </Fragment>
 )
 
 const Header = ({ user }) => (
-  <Navbar bg="primary" variant="dark" expand="md">
+  <Navbar bg="dark" variant="dark" expand="md">
     <Navbar.Brand href="#">
       Stalgiac
     </Navbar.Brand>

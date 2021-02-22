@@ -3,9 +3,10 @@ import { withRouter } from 'react-router-dom'
 
 import { signIn } from '../../api/auth'
 import messages from '../AutoDismissAlert/messages'
+import SignInForm from './../../shared/SignInForm'
 
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+// import Form from 'react-bootstrap/Form'
+// import Button from 'react-bootstrap/Button'
 
 import { withSnackbar } from 'notistack'
 
@@ -19,11 +20,16 @@ class SignIn extends Component {
     }
   }
 
-  handleChange = event => this.setState({
-    [event.target.name]: event.target.value
-  })
+  handleInputChange = (event) => {
+    event.persist()
+    this.setState(state => {
+      return {
+        ...this.state, [event.target.name]: event.target.value
+      }
+    })
+  }
 
-  onSignIn = event => {
+  handleSubmit = event => {
     event.preventDefault()
 
     const { history, setUser, enqueueSnackbar } = this.props
@@ -42,44 +48,15 @@ class SignIn extends Component {
   }
 
   render () {
-    const { email, password } = this.state
+    // const { email, password } = this.state
 
     return (
-      <div className="row">
-        <div className="col-sm-10 col-md-8 mx-auto mt-5">
-          <h3>Sign In</h3>
-          <Form onSubmit={this.onSignIn}>
-            <Form.Group controlId="email">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                required
-                type="email"
-                name="email"
-                value={email}
-                placeholder="Enter email"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                required
-                name="password"
-                value={password}
-                type="password"
-                placeholder="Password"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-            >
-              Submit
-            </Button>
-          </Form>
-        </div>
-      </div>
+      <SignInForm
+        email={this.state.email}
+        password={this.state.password}
+        handleSubmit={this.handleSubmit}
+        handleInputChange={this.handleInputChange}
+      />
     )
   }
 }

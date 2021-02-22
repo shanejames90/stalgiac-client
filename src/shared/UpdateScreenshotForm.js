@@ -77,7 +77,7 @@ function UpdateScreenshotForm (props) {
                 variant="outlined"
               />
             </FormControl>
-            <Button type="submit" variant="contained" color="default" style={{ marginLeft: '10px' }}>
+            <Button type="submit" variant="contained" style={{ marginLeft: '10px', color: '#8EE4AF' }}>
                   Update
               <span className="material-icons">cloud_upload</span>
             </Button>

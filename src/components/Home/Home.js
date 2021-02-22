@@ -42,7 +42,7 @@ const tutorialSteps = [
 ]
 
 const styles = theme => ({
-  root: {
+  start: {
     maxWidth: 400,
     flexGrow: 1
   },
@@ -89,7 +89,7 @@ class Home extends React.Component {
     const maxSteps = tutorialSteps.length
 
     return (
-      <div className={classes.root}>
+      <div className={classes.start}>
         <Paper square elevation={0} className={classes.header}>
           <Typography>{tutorialSteps[activeStep].label}</Typography>
         </Paper>

@@ -4,8 +4,9 @@ import { v4 as uuid } from 'uuid'
 
 import AuthenticatedRoute from './components/AuthenticatedRoute/AuthenticatedRoute'
 // import AutoDismissAlert from './components/AutoDismissAlert/AutoDismissAlert'
-import Header from './components/Header/Header'
-import Home from './components/Home/Home'
+// import Header from './components/Header/Header'
+import NewHeader from './components/Header/NewHeader'
+// import Home from './components/Home/Home'
 import SignUp from './components/SignUp/SignUp'
 import SignIn from './components/SignIn/SignIn'
 import SignOut from './components/SignOut/SignOut'
@@ -49,7 +50,9 @@ class App extends Component {
 
     return (
       <Fragment>
-        <Header user={user} />
+        <Route path='/' render={() => (
+          <NewHeader user={user} setUser={this.setUser} msgAlert={this.msgAlert} />
+        )} />
         {msgAlerts.map(msgAlert => (
           <CustomizedSnackbars
             key={msgAlert.id}
@@ -60,9 +63,6 @@ class App extends Component {
           />
         ))}
         <main className="container">
-          <Route path='/homepath' render={() => (
-            <Home />
-          )} />
           <Route path='/sign-up' render={() => (
             <SignUp msgAlert={this.msgAlert} setUser={this.setUser} />
           )} />

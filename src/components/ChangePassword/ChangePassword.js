@@ -6,8 +6,7 @@ import messages from '../AutoDismissAlert/messages'
 
 import { withSnackbar } from 'notistack'
 
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import ChangePasswordForm from './../../shared/ChangePasswordForm'
 
 class ChangePassword extends Component {
   constructor (props) {
@@ -19,11 +18,16 @@ class ChangePassword extends Component {
     }
   }
 
-  handleChange = event => this.setState({
-    [event.target.name]: event.target.value
-  })
+  handleInputChange = (event) => {
+    event.persist()
+    this.setState(state => {
+      return {
+        ...this.state, [event.target.name]: event.target.value
+      }
+    })
+  }
 
-  onChangePassword = event => {
+  handleSubmit = event => {
     event.preventDefault()
 
     const { enqueueSnackbar, history, user } = this.props
@@ -42,42 +46,15 @@ class ChangePassword extends Component {
   }
 
   render () {
-    const { oldPassword, newPassword } = this.state
-
     return (
       <div className="row">
         <div className="col-sm-10 col-md-8 mx-auto mt-5">
-          <h3>Change Password</h3>
-          <Form onSubmit={this.onChangePassword}>
-            <Form.Group controlId="oldPassword">
-              <Form.Label>Old password</Form.Label>
-              <Form.Control
-                required
-                name="oldPassword"
-                value={oldPassword}
-                type="password"
-                placeholder="Old Password"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="newPassword">
-              <Form.Label>New Password</Form.Label>
-              <Form.Control
-                required
-                name="newPassword"
-                value={newPassword}
-                type="password"
-                placeholder="New Password"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-            >
-              Submit
-            </Button>
-          </Form>
+          <ChangePasswordForm
+            oldPassword={this.state.oldPassword}
+            newPassword={this.state.newPassword}
+            handleSubmit={this.handleSubmit}
+            handleInputChange={this.handleInputChange}
+          />
         </div>
       </div>
     )

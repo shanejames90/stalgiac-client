@@ -1,6 +1,6 @@
 let apiUrl
 const apiUrls = {
-  production: 'https://stalgiac-api.herokuapp.com',
+  production: 'https://stalgiac-api.herokuapp.com/',
   development: 'http://localhost:8000'
 }
 

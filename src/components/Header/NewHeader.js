@@ -65,7 +65,7 @@ class NewHeader extends React.Component {
       .then(() => enqueueSnackbar(messages.signInSuccess, {
         variant: 'success'
       }))
-      .then(() => history.push('/'))
+      .then(() => history.push('/screenshots'))
       .catch(error => {
         this.setState({ email: '', password: '' })
         enqueueSnackbar(messages.signInFailure + error.message, {
@@ -87,7 +87,7 @@ class NewHeader extends React.Component {
       .then(() => enqueueSnackbar(messages.signUpSuccess, {
         variant: 'success'
       }))
-      .then(() => history.push('/'))
+      .then(() => history.push('/screenshots'))
       .catch(error => {
         this.setState({ email: '', password: '', passwordConfirmation: '' })
         enqueueSnackbar(messages.signUpFailure + error.message, {

@@ -109,14 +109,16 @@ class PostScreenshot extends Component {
 
     render () {
       return (
-        <div>
-          <ScreenshotForm
-            title={this.state.screenshot.title}
-            description={this.state.screenshot.description}
-            imagefile={this.state.screenshot.imagefile}
-            handleSubmit={this.handleSubmit}
-            handleInputChange={this.handleInputChange}
-          />
+        <div className="row">
+          <div className="col-sm-10 col-md-8 mx-auto mt-5">
+            <ScreenshotForm
+              title={this.state.screenshot.title}
+              description={this.state.screenshot.description}
+              imagefile={this.state.screenshot.imagefile}
+              handleSubmit={this.handleSubmit}
+              handleInputChange={this.handleInputChange}
+            />
+          </div>
         </div>
       )
     }

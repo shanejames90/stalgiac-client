@@ -115,7 +115,7 @@ function ProductHowItWorks (props) {
             </Grid>
           </Grid>
         </div>
-        <div className={classes.filler}></div>
+        <div style={{ height: '400px' }}></div>
       </Container>
     </section>
   )

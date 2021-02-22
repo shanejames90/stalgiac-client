@@ -144,7 +144,7 @@ class NewHeader extends React.Component {
         </Typography>
         <Typography variant="h6" color="inherit" className={classes.menuButton}>
           <Tooltip title="Home" aria-label="Home">
-            <Button color="inherit" href="#/" style={{ color: '#FFFFFF' }}><span className="material-icons">home</span></Button>
+            <Button color="inherit" href="#/home" style={{ color: '#FFFFFF' }}><span className="material-icons">home</span></Button>
           </Tooltip>
         </Typography>
         <Typography variant="h6" color="inherit" className={classes.menuButton}>

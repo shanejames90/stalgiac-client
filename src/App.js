@@ -15,6 +15,8 @@ import PostScreenshot from './components/PostScreenshot/PostScreenshot'
 import IndexScreenshots from './components/IndexScreenshots/IndexScreenshots'
 import ShowScreenshot from './components/ShowScreenshot/ShowScreenshot'
 import UpdateScreenshot from './components/UpdateScreenshot/UpdateScreenshot'
+import HomePageHero from './components/HomePageHero/HomePageHero'
+import HomePageHowItWorks from './components/HomePageHero/HomePageHowItWorks'
 
 import CustomizedSnackbars from './components/AutoDismissAlert/SnackAlerts.js'
 // import { withRouter } from 'react-router-dom'
@@ -52,6 +54,12 @@ class App extends Component {
       <Fragment>
         <Route path='/' render={() => (
           <NewHeader user={user} setUser={this.setUser} msgAlert={this.msgAlert} />
+        )} />
+        <Route exact path='/' render={() => (
+          <HomePageHero user={user} setUser={this.setUser} msgAlert={this.msgAlert} />
+        )} />
+        <Route exact path='/' render={() => (
+          <HomePageHowItWorks user={user} setUser={this.setUser} msgAlert={this.msgAlert} />
         )} />
         {msgAlerts.map(msgAlert => (
           <CustomizedSnackbars

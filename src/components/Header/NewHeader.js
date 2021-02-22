@@ -7,7 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import LoginModal from './LoginModal'
-import { signIn } from '../../api/auth'
+import SignUpModal from './SignUpModal'
+import { signUp, signIn } from '../../api/auth'
 import messages from '../AutoDismissAlert/messages'
 import { withSnackbar } from 'notistack'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -37,7 +38,9 @@ class NewHeader extends React.Component {
     this.state = {
       email: '',
       password: '',
-      modalOpen: false
+      passwordConfirmation: '',
+      modalOpen: false,
+      openSignUp: false
     }
   }
 
@@ -70,10 +73,40 @@ class NewHeader extends React.Component {
         })
       })
   }
+  handleSignUpSubmit = event => {
+    event.preventDefault()
+
+    const { enqueueSnackbar, history, setUser } = this.props
+
+    signUp(this.state)
+      .then(() => signIn(this.state))
+      .then(res => setUser(res.data.user))
+      .then(() => this.setState({ openSignUp: false }))
+      // clear forms
+      .then(() => this.setState({ email: '', password: '', passwordConfirmation: '' }))
+      .then(() => enqueueSnackbar(messages.signUpSuccess, {
+        variant: 'success'
+      }))
+      .then(() => history.push('/'))
+      .catch(error => {
+        this.setState({ email: '', password: '', passwordConfirmation: '' })
+        enqueueSnackbar(messages.signUpFailure + error.message, {
+          variant: 'error'
+        })
+      })
+  }
+  handleClickSignUpOpen = () => {
+    this.setState({ openSignUp: true })
+  }
+
+  handleSignUpClose = () => {
+    this.setState({ openSignUp: false })
+  }
 
   handleClickOpen = () => {
     this.setState({ modalOpen: true })
   }
+
   handleClose = () => {
     this.setState({ modalOpen: false })
   };
@@ -98,7 +131,7 @@ class NewHeader extends React.Component {
                 Sign In</Button>
           </Typography>
           <Typography variant="h6" color="inherit" className={classes.menuButton}>
-            <Button color="inherit" onClick={this.handleSuClickOpen} style={{ color: '#FC4445' }}>
+            <Button color="inherit" onClick={this.handleClickSignUpOpen} style={{ color: '#FC4445' }}>
               Sign Up</Button>
           </Typography>
         </Toolbar>
@@ -143,6 +176,16 @@ class NewHeader extends React.Component {
             handleClose={this.handleClose}
             handleClickOpen={this.handleClickOpen}
             handleSubmit={this.handleSubmit}
+          />
+          <SignUpModal
+            email={this.state.email}
+            password={this.state.password}
+            passwordConfirmation={this.state.passwordConfirmation}
+            open={this.state.openSignUp}
+            handleInputChange={this.handleInputChange}
+            handleSignUpClose={this.handleSignUpClose}
+            handleClickSignUpOpen={this.handleClickSignUpOpen}
+            handleSignUpSubmit={this.handleSignUpSubmit}
           />
         </AppBar>
       </div>

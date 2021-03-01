@@ -54,7 +54,7 @@ const styles = theme => ({
     // marginTop: theme.spacing(8)
   },
   filler: {
-    heigh: '100px'
+    heigh: '10px'
   }
 })
 
@@ -115,7 +115,7 @@ function ProductHowItWorks (props) {
             </Grid>
           </Grid>
         </div>
-        <div style={{ height: '200px' }}></div>
+        <div style={{ height: '10px' }}></div>
       </Container>
     </section>
   )

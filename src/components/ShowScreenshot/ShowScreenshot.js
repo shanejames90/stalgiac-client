@@ -7,7 +7,7 @@ import { showScreenshot, deleteScreenshot, updateScreenshot } from '../../api/sc
 import messages from '../AutoDismissAlert/messages'
 import { withSnackbar } from 'notistack'
 
-import Bgimage from './../../shared/bgimage.png'
+// import Bgimage from './../../shared/bgimage.png'
 
 import { withStyles } from '@material-ui/core/styles'
 import classnames from 'classnames'
@@ -19,6 +19,7 @@ import CardActions from '@material-ui/core/CardActions'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
+import S3FileUpload from 'react-s3'
 
 import UpdateScreenshotForm from './../../shared/UpdateScreenshotForm'
 
@@ -55,6 +56,14 @@ const styles = theme => ({
   }
 })
 
+const config = {
+  bucketName: process.env.REACT_APP_BUCKET_NAME,
+  dirName: 'screenshots',
+  region: 'us-east-1',
+  accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
+}
+
 class ShowScreenshot extends Component {
   constructor (props) {
     super(props)
@@ -69,6 +78,7 @@ class ShowScreenshot extends Component {
       deleted: false,
       expanded: false
     }
+    this.upload = this.upload.bind(this)
   }
 
   async componentDidMount () {
@@ -88,23 +98,52 @@ class ShowScreenshot extends Component {
     }
   }
 
-  handleInputChange = (e) => {
-    e.persist()
-    this.setState(currState => {
-      const { name, value } = e.target
-      const updatedField = {
-        [name]: value
-      }
-      // console.log({ ...updatedField, ...currState.screenshot })
-      // console.log({ ...currState.screenshot, ...updatedField })
-      const newScreenshot = {
-        ...currState.screenshot,
-        ...updatedField
-      }
-      // console.log(newScreenshot)
+  upload = (event) => {
+    S3FileUpload.uploadFile(event.target.files[0], config)
+      .then((data) => {
+        this.setState({ screenshot: { imagefile: data.location } })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  handleInputChange = event => {
+    if (event.target.type === 'location') {
+      const name = event.target.name
+      this.setState({
+        [name]: event.target.location
+      })
+    }
+    event.persist()
+    const target = event.target
+    const value = event.target.type === 'location' ? event.target.location : event.target.value
+    const updatedField = {
+      [target.name]: value
+    }
+    this.setState((state) => {
+      const newScreenshot = Object.assign({}, state.screenshot, updatedField)
       return { screenshot: newScreenshot }
     })
   }
+
+  // handleInputChange = (e) => {
+  //   e.persist()
+  //   this.setState(currState => {
+  //     const { name, value } = e.target
+  //     const updatedField = {
+  //       [name]: value
+  //     }
+  //     // console.log({ ...updatedField, ...currState.screenshot })
+  //     // console.log({ ...currState.screenshot, ...updatedField })
+  //     const newScreenshot = {
+  //       ...currState.screenshot,
+  //       ...updatedField
+  //     }
+  //     // console.log(newScreenshot)
+  //     return { screenshot: newScreenshot }
+  //   })
+  // }
 
   handleSubmit = async (e) => {
     e.preventDefault()
@@ -184,7 +223,7 @@ class ShowScreenshot extends Component {
         />
         <CardMedia
           className={classes.media}
-          image={Bgimage}
+          image={screenshot.imagefile}
           title="screenshot"
         />
         <CardContent>
@@ -215,6 +254,7 @@ class ShowScreenshot extends Component {
               imagefile={this.state.screenshot.imagefile}
               handleSubmit={this.handleSubmit}
               handleInputChange={this.handleInputChange}
+              upload={this.upload}
             />
           </CardContent>
         </Collapse>

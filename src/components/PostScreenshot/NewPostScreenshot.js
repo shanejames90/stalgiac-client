@@ -3,9 +3,11 @@ import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 import { postScreenshot } from '../../api/screenshot'
-import ScreenshotForm from './../../shared/ScreenshotForm'
+import NewScreenshotForm from './../../shared/NewScreenshotForm'
 import messages from '../AutoDismissAlert/messages'
 import { withSnackbar } from 'notistack'
+// const ReactS3Uploader = require('react-s3-uploader')
+import S3FileUpload from 'react-s3'
 
 const styles = theme => ({
   root: {
@@ -24,7 +26,15 @@ const styles = theme => ({
   }
 })
 
-class PostScreenshot extends Component {
+const config = {
+  bucketName: process.env.REACT_APP_BUCKET_NAME,
+  dirName: 'screenshots',
+  region: 'us-east-1',
+  accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
+}
+
+class NewPostScreenshot extends Component {
   constructor (props) {
     super(props)
 
@@ -36,9 +46,32 @@ class PostScreenshot extends Component {
       },
       createdId: null
     }
+    this.upload = this.upload.bind(this)
   }
 
   // on file select
+  // handleInputFile = (event) => {
+  //   event.preventDefault()
+  //   this.setState({ sspic: event.target.files[0] })
+  // }
+  //
+  // handleInputUpload = event => {
+  //   const { enqueueSnackbar } = this.props
+  //   event.preventDefault()
+  //   const data = new FormData(event.target)
+  //   data.append('file', this.state.screenshot.sspic)
+  //
+  //   axios.post(apiUrl + '/media/', data)
+  //     .then(() => {
+  //       this.props.history.push('/')
+  //     })
+  //     .catch(error => {
+  //       enqueueSnackbar(messages.createScreenshotFailure + error.message, {
+  //         variant: 'error'
+  //       })
+  //     })
+  // }
+
   // onScreenshotChange = (event) => {
   //   if (event.target.files && event.target.files[0]) {
   //     this.setState({
@@ -47,19 +80,45 @@ class PostScreenshot extends Component {
   //   }
   // }
 
-  // onScreenshotChange = (event) => {
-  //   this.setState({ screenshot: event.target.files[0] })
-  // }
-  handleInputChange = (event) => {
+  upload = (event) => {
+    S3FileUpload.uploadFile(event.target.files[0], config)
+      .then((data) => {
+        this.setState({ screenshot: { imagefile: data.location } })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  handleInputChange = event => {
+    if (event.target.type === 'location') {
+      const name = event.target.name
+      this.setState({
+        [name]: event.target.location
+      })
+    }
     event.persist()
-    this.setState(state => {
-      return {
-        screenshot: {
-          ...state.screenshot, [event.target.name]: event.target.value
-        }
-      }
+    const target = event.target
+    const value = event.target.type === 'location' ? event.target.location : event.target.value
+    const updatedField = {
+      [target.name]: value
+    }
+    this.setState((state) => {
+      const newScreenshot = Object.assign({}, state.screenshot, updatedField)
+      return { screenshot: newScreenshot }
     })
   }
+
+  // handleInputChange = (event) => {
+  //   event.persist()
+  //   this.setState(state => {
+  //     return {
+  //       screenshot: {
+  //         ...state.screenshot, [event.target.name]: event.target.value
+  //       }
+  //     }
+  //   })
+  // }
 
     // on file upload
     handleSubmit = (event) => {
@@ -110,12 +169,13 @@ class PostScreenshot extends Component {
       return (
         <div className="row">
           <div className="col-sm-10 col-md-8 mx-auto mt-5">
-            <ScreenshotForm
+            <NewScreenshotForm
               title={this.state.screenshot.title}
               description={this.state.screenshot.description}
               imagefile={this.state.screenshot.imagefile}
               handleSubmit={this.handleSubmit}
               handleInputChange={this.handleInputChange}
+              upload={this.upload}
             />
           </div>
         </div>
@@ -123,4 +183,4 @@ class PostScreenshot extends Component {
     }
 }
 
-export default withRouter(withStyles(styles)(withSnackbar(PostScreenshot)))
+export default withRouter(withStyles(styles)(withSnackbar(NewPostScreenshot)))

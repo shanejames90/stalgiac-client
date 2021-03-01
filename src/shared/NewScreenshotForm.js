@@ -7,10 +7,9 @@ import { withStyles } from '@material-ui/core/styles'
 import FormControl from '@material-ui/core/FormControl'
 import Form from 'react-bootstrap/Form'
 import TextField from '@material-ui/core/TextField'
-// import Grid from '@material-ui/core/Grid'
+import Grid from '@material-ui/core/Grid'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridList from '@material-ui/core/GridList'
-import Grid from '@material-ui/core/Grid'
 import ListSubheader from '@material-ui/core/ListSubheader'
 
 import Button from '@material-ui/core/Button'
@@ -30,18 +29,18 @@ const styles = theme => ({
   },
   gridList: {
     width: 500,
-    height: 200
+    height: 500
   }
 })
 
-function UpdateScreenshotForm (props) {
+function NewScreenshotForm (props) {
   const { classes, handleSubmit, handleInputChange, upload } = props
 
   return (
     <div className={classes.root}>
       <GridList cellHeight={150} className={classes.gridList}>
         <GridListTile cols={1} style={{ height: 'auto', marginTop: '' }}>
-          <ListSubheader component="div">Update This Screenshot</ListSubheader>
+          <ListSubheader component="div">New Screenshot</ListSubheader>
           <Form className={classes.container} autoComplete="off" onSubmit={handleSubmit}>
             <FormControl className={classes.margin}>
               <TextField
@@ -76,10 +75,25 @@ function UpdateScreenshotForm (props) {
                 />
               </Grid>
             </Grid>
+            {/* <FormControl className={classes.margin}>
+              <TextField
+                id="outlined-search"
+                label="Screenshot Url"
+                name="imagefile"
+                onChange={handleInputChange}
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+              />
+              <input type="file" id="file_input" />
+              <p id="status">Please select a file</p>
+            </FormControl> */}
             <Button type="submit" variant="contained" style={{ marginLeft: '10px', color: '#8EE4AF' }}>
-                  Update
+                  Upload
               <span className="material-icons">cloud_upload</span>
             </Button>
+            {/* </Grid>
+            </Grid> */}
           </Form>
         </GridListTile>
       </GridList>
@@ -87,8 +101,8 @@ function UpdateScreenshotForm (props) {
   )
 }
 
-UpdateScreenshotForm.propTypes = {
+NewScreenshotForm.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(UpdateScreenshotForm)
+export default withStyles(styles)(NewScreenshotForm)

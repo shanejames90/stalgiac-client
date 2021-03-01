@@ -10,7 +10,7 @@ import GridListTileBar from '@material-ui/core/GridListTileBar'
 import ListSubheader from '@material-ui/core/ListSubheader'
 // import IconButton from '@material-ui/core/IconButton'
 // import InfoIcon from '@material-ui/icons/Info'
-import Bgimage from './../../shared/bgimage.png'
+// import Bgimage from './../../shared/bgimage.png'
 import { withSnackbar } from 'notistack'
 import messages from '../AutoDismissAlert/messages'
 
@@ -62,7 +62,7 @@ class IndexScreenshots extends Component {
     } else {
       screenshotsJSX = this.state.screenshots.map(screenshot => (
         <GridListTile key={screenshot.id}>
-          <img src={Bgimage} alt={screenshot.title} />
+          <img src={screenshot.imagefile} alt={screenshot.title} />
           <GridListTileBar
             title={screenshot.title}
             subtitle={screenshot.imagefile}

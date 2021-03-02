@@ -8,6 +8,7 @@ import messages from '../AutoDismissAlert/messages'
 import { withSnackbar } from 'notistack'
 // const ReactS3Uploader = require('react-s3-uploader')
 import S3FileUpload from 'react-s3'
+// import S3 from 'aws-s3'
 
 const styles = theme => ({
   root: {
@@ -33,6 +34,7 @@ const config = {
   accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
 }
+// const S3Client = new S3(config)
 
 class NewPostScreenshot extends Component {
   constructor (props) {
@@ -89,6 +91,17 @@ class NewPostScreenshot extends Component {
         console.log(error)
       })
   }
+  // upload = (event) => {
+  //   S3Client
+  //     .uploadFile(event.target.files[0])
+  //     .then((data) => {
+  //       console.log(data)
+  //       // this.setState({ screenshot: { imagefile: data.location } })
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     })
+  // }
 
   handleInputChange = event => {
     if (event.target.type === 'location') {

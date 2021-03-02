@@ -35,10 +35,7 @@ const config = {
   accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
 }
-
-// }
 // const S3Client = new S3(config)
-// const newFileName = 'my-awesome-file'
 
 class NewPostScreenshot extends Component {
   constructor (props) {
@@ -105,10 +102,9 @@ class NewPostScreenshot extends Component {
   }
 
   // upload = (event) => {
-  //   S3Client
-  //     .uploadFile(event.target.files[0])
+  //   uploadFile(event.target.files[0], config)
   //     .then((data) => {
-  //       console.log(data)
+  //       console.log(data.location)
   //       // this.setState({ screenshot: { imagefile: data.location } })
   //     })
   //     .catch((error) => {

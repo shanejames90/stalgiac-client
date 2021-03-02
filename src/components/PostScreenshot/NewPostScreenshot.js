@@ -7,7 +7,8 @@ import NewScreenshotForm from './../../shared/NewScreenshotForm'
 import messages from '../AutoDismissAlert/messages'
 import { withSnackbar } from 'notistack'
 // const ReactS3Uploader = require('react-s3-uploader')
-import S3FileUpload from 'react-s3'
+// import S3FileUpload from 'react-s3'
+import { uploadFile } from 'react-s3'
 // import S3 from 'aws-s3'
 
 const styles = theme => ({
@@ -34,7 +35,10 @@ const config = {
   accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
 }
+
+// }
 // const S3Client = new S3(config)
+// const newFileName = 'my-awesome-file'
 
 class NewPostScreenshot extends Component {
   constructor (props) {
@@ -49,6 +53,7 @@ class NewPostScreenshot extends Component {
       createdId: null
     }
     this.upload = this.upload.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this)
   }
 
   // on file select
@@ -83,14 +88,22 @@ class NewPostScreenshot extends Component {
   // }
 
   upload = (event) => {
-    S3FileUpload.uploadFile(event.target.files[0], config)
+    uploadFile(event.target.files[0], config)
       .then((data) => {
-        this.setState({ screenshot: { imagefile: data.location } })
+        this.setState(state => {
+          return {
+            screenshot: {
+              ...state.screenshot,
+              imagefile: data.location
+            }
+          }
+        })
       })
       .catch((error) => {
         console.log(error)
       })
   }
+
   // upload = (event) => {
   //   S3Client
   //     .uploadFile(event.target.files[0])
@@ -103,35 +116,36 @@ class NewPostScreenshot extends Component {
   //     })
   // }
 
-  handleInputChange = event => {
-    if (event.target.type === 'location') {
-      const name = event.target.name
-      this.setState({
-        [name]: event.target.location
-      })
-    }
-    event.persist()
-    const target = event.target
-    const value = event.target.type === 'location' ? event.target.location : event.target.value
-    const updatedField = {
-      [target.name]: value
-    }
-    this.setState((state) => {
-      const newScreenshot = Object.assign({}, state.screenshot, updatedField)
-      return { screenshot: newScreenshot }
-    })
-  }
-
-  // handleInputChange = (event) => {
+  // handleInputChange = event => {
+  //   if (event.target.type === 'location') {
+  //     const name = event.target.name
+  //     this.setState({
+  //       [name]: event.target.location
+  //     })
+  //   }
   //   event.persist()
-  //   this.setState(state => {
-  //     return {
-  //       screenshot: {
-  //         ...state.screenshot, [event.target.name]: event.target.value
-  //       }
-  //     }
+  //   const target = event.target
+  //   const value = event.target.type === 'location' ? event.target.location : event.target.value
+  //   const updatedField = {
+  //     [target.name]: value
+  //   }
+  //   this.setState((state) => {
+  //     const newScreenshot = Object.assign({}, state.screenshot, updatedField)
+  //     return { screenshot: newScreenshot }
   //   })
   // }
+
+  handleInputChange = (event) => {
+    event.persist()
+    this.setState(state => {
+      return {
+        screenshot: {
+          ...state.screenshot,
+          [event.target.name]: event.target.value
+        }
+      }
+    })
+  }
 
     // on file upload
     handleSubmit = (event) => {

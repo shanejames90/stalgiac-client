@@ -35,6 +35,13 @@ const config = {
   accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
 }
+// const S3Client = new S3({
+//   bucketName: process.env.REACT_APP_BUCKET_NAME,
+//   dirName: 'screenshots',
+//   region: 'us-east-1',
+//   accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+//   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY
+// })
 // const S3Client = new S3(config)
 
 class NewPostScreenshot extends Component {
@@ -83,9 +90,10 @@ class NewPostScreenshot extends Component {
   //     })
   //   }
   // }
-
-  upload = (event) => {
-    uploadFile(event.target.files[0], config)
+  upload = (e) => {
+    e.preventDefault()
+    const file = e.target.files[0]
+    uploadFile(file, config)
       .then((data) => {
         this.setState(state => {
           return {
@@ -96,16 +104,40 @@ class NewPostScreenshot extends Component {
           }
         })
       })
-      .catch((error) => {
-        console.log(error)
+      .catch((err) => {
+        console.log(err)
       })
   }
 
   // upload = (event) => {
   //   uploadFile(event.target.files[0], config)
   //     .then((data) => {
-  //       console.log(data.location)
-  //       // this.setState({ screenshot: { imagefile: data.location } })
+  //       this.setState(state => {
+  //         return {
+  //           screenshot: {
+  //             ...state.screenshot,
+  //             imagefile: data.location
+  //           }
+  //         }
+  //       })
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     })
+  // }
+
+  // upload = (event) => {
+  //   S3Client
+  //     .uploadFile(event.target.files[0])
+  //     .then((data) => {
+  //       this.setState(state => {
+  //         return {
+  //           screenshot: {
+  //             ...state.screenshot,
+  //             imagefile: data.location
+  //           }
+  //         }
+  //       })
   //     })
   //     .catch((error) => {
   //       console.log(error)
